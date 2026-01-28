@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Kosztów Błędnej Rekrutacji 2026 | KaWeHR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F5F3EF;
+            --gold: #D4AF37;
+            --dark-gold: #B8941F;
+            --black: #1A1A1A;
+            --soft-black: #2D2D2D;
+            --light-gray: #E8E6E1;
+            --shadow: rgba(212, 175, 55, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, #FAFAF8 100%);
+            color: var(--black);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px 60px;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--soft-black);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--soft-black);
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto 10px;
+        }
+
+        .tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            color: var(--gold);
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .accent-line {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 30px auto;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 2px;
+            box-shadow: 0 10px 40px var(--shadow);
+            border-top: 3px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px var(--shadow);
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--soft-black);
+            margin-bottom: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .label-hint {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: #666;
+            display: block;
+            margin-top: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--light-gray);
+            border-radius: 2px;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--cream);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: var(--light-gray);
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--soft-black);
+        }
+
+        .tab:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            color: white;
+            box-shadow: 0 3px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .info-box {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 15px;
+            border-left: 3px solid var(--gold);
+            border-radius: 2px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--soft-black);
+        }
+
+        .cost-breakdown {
+            margin-top: 20px;
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--light-gray);
+            transition: all 0.3s ease;
+        }
+
+        .cost-item:hover {
+            padding-left: 10px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.05), transparent);
+        }
+
+        .cost-label {
+            font-size: 0.95rem;
+            color: var(--soft-black);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cost-label .tooltip {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: var(--gold);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 0.7rem;
+            line-height: 16px;
+            cursor: help;
+            font-weight: 600;
+        }
+
+        .cost-value {
+            font-weight: 600;
+            color: var(--black);
+            font-size: 1.1rem;
+        }
+
+        .total-cost {
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            border-radius: 2px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .total-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: white;
+            font-weight: 400;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .total-amount {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .comparison-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 2px;
+            text-align: center;
+        }
+
+        .comparison-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 8px;
+        }
+
+        .comparison-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .warning-text {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 3px solid var(--gold);
+            border-radius: 2px;
+        }
+
+        .warning-text p {
+            font-size: 0.95rem;
+            color: var(--soft-black);
+            line-height: 1.8;
+        }
+
+        .cta-section {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 2px;
+            box-shadow: 0 10px 40px var(--shadow);
+            text-align: center;
+            border-top: 3px solid var(--gold);
+            margin-top: 40px;
+        }
+
+        .cta-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--black);
+            margin-bottom: 20px;
+        }
+
+        .cta-text {
+            font-size: 1.1rem;
+            color: var(--soft-black);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .email-form input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .success-message {
+            display: none;
+            padding: 20px;
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 3px solid #4CAF50;
+            border-radius: 2px;
+            margin-top: 20px;
+            color: #2E7D32;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--soft-black);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--dark-gold);
+        }
+
+        @media (max-width: 1200px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .total-amount {
+                font-size: 2.5rem;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .tabs {
+                gap: 5px;
+            }
+
+            .tab {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">KaWeHR</div>
+            <h1>Kalkulator Kosztów<br>Błędnej Rekrutacji 2026</h1>
+            <div class="accent-line"></div>
+            <p class="subtitle">
+                Precyzyjne obliczenia oparte na aktualnych danych rynkowych. 
+                Sprawdź, ile realnie kosztuje niewłaściwa decyzja rekrutacyjna w Twojej branży.
+            </p>
+            <p class="tagline">Human FIRST. Data Always. AI When Smart.™</p>
+        </header>
+
+        <div class="calculator-grid">
+            <div class="card">
+                <h2 class="section-title">Parametry Rekrutacji</h2>
+
+                <div class="input-group">
+                    <label for="position">
+                        Stanowisko
+                        <span class="label-hint">Np. HR Business Partner, IT Manager, Sales Director</span>
+                    </label>
+                    <input type="text" id="position" placeholder="Wpisz nazwę stanowiska..." value="">
+                </div>
+
+                <div class="input-group">
+                    <label>Branża</label>
+                    <select id="industry">
+                        <option value="it">IT / Technologie</option>
+                        <option value="finance">Finanse / Bankowość</option>
+                        <option value="marketing">Marketing / Reklama</option>
+                        <option value="sales">Sprzedaż / Handel</option>
+                        <option value="hr">HR / Zasoby Ludzkie</option>
+                        <option value="ssc">SSC / BPO / Shared Services</option>
+                        <option value="production">Produkcja / Przemysł</option>
+                        <option value="services">Usługi</option>
+                        <option value="admin">Administracja</option>
+                        <option value="custom">Własne dane</option>
+                    </select>
+                </div>
+
+                <div class="info-box" id="industry-info">
+                    <strong>IT / Technologie:</strong> Średnie wynagrodzenie: 12,000-15,000 zł | Rotacja: 15%
+                </div>
+
+                <div class="input-group">
+                    <label>Typ umowy</label>
+                    <div class="tabs">
+                        <button class="tab active" data-contract="employment">Umowa o pracę</button>
+                        <button class="tab" data-contract="b2b">B2B</button>
+                        <button class="tab" data-contract="contract">Zlecenie</button>
+                    </div>
+                </div>
+
+                <div id="employment-inputs">
+                    <div class="input-group">
+                        <label for="salary">
+                            Miesięczne wynagrodzenie brutto (PLN)
+                            <span class="label-hint">Minimalna krajowa 2026: 4,806 zł</span>
+                        </label>
+                        <input type="number" id="salary" value="13500" min="4806" step="100">
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Składki pracodawcy (2026):</strong><br>
+                        Emerytalne: 9.76% | Rentowe: 6.5% | Wypadkowe: 1.67%<br>
+                        FP: 2.45% | FGŚP: 0.1% | <strong>Razem: ~20.48%</strong>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="employment-months">
+                            Jak długo osoba pracowała? (miesiące)
+                            <span class="label-hint">Średni czas przed odejściem</span>
+                        </label>
+                        <input type="number" id="employment-months" value="6" min="1" max="36" step="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="recruitment-weeks">
+                            Czas trwania rekrutacji (tygodnie)
+                            <span class="label-hint">Od ogłoszenia do zatrudnienia</span>
+                        </label>
+                        <input type="number" id="recruitment-weeks" value="8" min="1" max="24" step="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="ad-cost">
+                            Koszt ogłoszeń rekrutacyjnych (PLN)
+                            <span class="label-hint">Portale pracy, LinkedIn, social media</span>
+                        </label>
+                        <input type="number" id="ad-cost" value="2000" min="0" step="100">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="recruiter-hours">
+                            Godziny pracy rekrutera nad procesem
+                            <span class="label-hint">Sourcing, rozmowy, koordynacja</span>
+                        </label>
+                        <input type="number" id="recruiter-hours" value="40" min="0" step="5">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="recruiter-rate">
+                            Stawka godzinowa rekrutera (PLN)
+                        </label>
+                        <input type="number" id="recruiter-rate" value="150" min="0" step="10">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="manager-hours">
+                            Godziny pracy managera nad rekrutacją
+                            <span class="label-hint">Rozmowy, decyzje, onboarding</span>
+                        </label>
+                        <input type="number" id="manager-hours" value="25" min="0" step="5">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="manager-rate">
+                            Stawka godzinowa managera (PLN)
+                        </label>
+                        <input type="number" id="manager-rate" value="250" min="0" step="10">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="training-cost">
+                            Koszt szkoleń i onboardingu (PLN)
+                            <span class="label-hint">Kursy, certyfikaty, materiały</span>
+                        </label>
+                        <input type="number" id="training-cost" value="5000" min="0" step="500">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="productivity-loss">
+                            Szacowana utrata produktywności (%)
+                            <span class="label-hint">Ile % produktywności utracono przez błędne zatrudnienie</span>
+                        </label>
+                        <input type="number" id="productivity-loss" value="60" min="0" max="100" step="5">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="team-size">
+                            Wielkość zespołu
+                        </label>
+                        <input type="number" id="team-size" value="8" min="1" step="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="team-impact">
+                            Wpływ na zespół - % utraconego czasu
+                            <span class="label-hint">Czas zespołu tracony na pokrywanie braków</span>
+                        </label>
+                        <input type="number" id="team-impact" value="10" min="0" max="50" step="5">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="section-title">Całkowity Koszt</h2>
+
+                <div class="cost-breakdown">
+                    <div class="cost-item">
+                        <span class="cost-label">
+                            Koszt procesu rekrutacyjnego
+                            <span class="tooltip" title="Ogłoszenia + czas rekrutera + czas managera">?</span>
+                        </span>
+                        <span class="cost-value" id="recruitment-cost">0 zł</span>
+                    </div>
+                    <div class="cost-item">
+                        <span class="cost-label">
+                            Wypłacone wynagrodzenie + ZUS
+                            <span class="tooltip" title="Brutto + składki pracodawcy (20.48%)">?</span>
+                        </span>
+                        <span class="cost-value" id="salary-cost">0 zł</span>
+                    </div>
+                    <div class="cost-item">
+                        <span class="cost-label">
+                            Koszty onboardingu i szkoleń
+                            <span class="tooltip" title="Czas wdrożenia + szkolenia + materiały">?</span>
+                        </span>
+                        <span class="cost-value" id="onboarding-cost">0 zł</span>
+                    </div>
+                    <div class="cost-item">
+                        <span class="cost-label">
+                            Utracona produktywność
+                            <span class="tooltip" title="Wartość niewykonanych zadań">?</span>
+                        </span>
+                        <span class="cost-value" id="productivity-cost">0 zł</span>
+                    </div>
+                    <div class="cost-item">
+                        <span class="cost-label">
+                            Koszt ponownej rekrutacji
+                            <span class="tooltip" title="Koszt pierwszej rekrutacji × 1.2">?</span>
+                        </span>
+                        <span class="cost-value" id="repeat-cost">0 zł</span>
+                    </div>
+                    <div class="cost-item">
+                        <span class="cost-label">
+                            Wpływ na zespół
+                            <span class="tooltip" title="Utracony czas zespołu + ryzyko rotacji">?</span>
+                        </span>
+                        <span class="cost-value" id="team-cost">0 zł</span>
+                    </div>
+                </div>
+
+                <div class="total-cost">
+                    <div class="total-label" id="total-label">Całkowity Koszt Błędnej Rekrutacji</div>
+                    <div class="total-amount" id="total-cost">0 zł</div>
+                    
+                    <div class="comparison">
+                        <div class="comparison-item">
+                            <div class="comparison-label">To równowartość</div>
+                            <div class="comparison-value" id="salary-multiple">0×</div>
+                            <div class="comparison-label">pensji rocznej</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">Koszt dla firmy</div>
+                            <div class="comparison-value" id="cost-per-month">0 zł</div>
+                            <div class="comparison-label">miesięcznie</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-text">
+                    <p><strong>⚠️ Uwaga:</strong> Te obliczenia to tylko <strong>bezpośrednie koszty</strong>. Rzeczywiste straty mogą być wyższe o:</p>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Utracone szanse biznesowe i projekty</li>
+                        <li>Spadek morale i zaangażowania zespołu</li>
+                        <li>Uszkodzenie reputacji jako pracodawcy</li>
+                        <li>Czas stabilizacji po odejściu (3-6 miesięcy)</li>
+                        <li>Potencjalna rotacja w zespole ("efekt domina")</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">Pobierz Szczegółowy Raport PDF</h2>
+            <p class="cta-text">
+                Wyślemy Ci spersonalizowany raport z pełną analizą kosztów, porównaniem do benchmarków branżowych 
+                oraz konkretnymi rekomendacjami jak uniknąć takich sytuacji w przyszłości.
+            </p>
+            <form class="email-form" id="lead-form">
+                <input type="text" id="name" placeholder="Twoje imię" required>
+                <input type="email" id="email" placeholder="Twój email" required>
+                <input type="text" id="company" placeholder="Nazwa firmy (opcjonalnie)">
+                <button type="submit" class="btn-primary">Wyślij Raport</button>
+            </form>
+            <div class="success-message" id="success-message">
+                <strong>✓ Dziękujemy!</strong> Raport został wysłany na Twój adres email. Sprawdź również folder SPAM.
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 KaWeHR – Human FIRST. Data Always. AI When Smart.™</p>
+            <p>Dane aktualne na styczeń 2026 | Źródła: GUS, ZUS, raporty branżowe</p>
+            <p><a href="https://kawehr.com">www.kawehr.com</a> | <a href="mailto:office@kawehr.com">office@kawehr.com</a> | <a href="tel:+48792090755">+48 792 090 755</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Industry data (2026)
+        const industryData = {
+            it: { 
+                name: 'IT / Technologie', 
+                salary: 13500, 
+                rotation: 15,
+                info: '<strong>IT / Technologie:</strong> Średnie wynagrodzenie: 12,000-15,000 zł | Rotacja: 15%'
+            },
+            finance: { 
+                name: 'Finanse / Bankowość', 
+                salary: 11500, 
+                rotation: 10,
+                info: '<strong>Finanse / Bankowość:</strong> Średnie wynagrodzenie: 10,000-13,000 zł | Rotacja: 10%'
+            },
+            marketing: { 
+                name: 'Marketing / Reklama', 
+                salary: 9000, 
+                rotation: 12,
+                info: '<strong>Marketing / Reklama:</strong> Średnie wynagrodzenie: 8,000-10,000 zł | Rotacja: 12%'
+            },
+            sales: { 
+                name: 'Sprzedaż / Handel', 
+                salary: 8000, 
+                rotation: 20,
+                info: '<strong>Sprzedaż / Handel:</strong> Średnie wynagrodzenie: 7,000-9,000 zł | Rotacja: 20%'
+            },
+            hr: { 
+                name: 'HR / Zasoby Ludzkie', 
+                salary: 9500, 
+                rotation: 14,
+                info: '<strong>HR / Zasoby Ludzkie:</strong> Średnie wynagrodzenie: 8,500-10,500 zł | Rotacja: 14%<br><small>HR Business Partner, Recruiter, HR Manager, C&B Specialist</small>'
+            },
+            ssc: { 
+                name: 'SSC / BPO / Shared Services', 
+                salary: 7500, 
+                rotation: 22,
+                info: '<strong>SSC / BPO:</strong> Średnie wynagrodzenie: 6,500-8,500 zł | Rotacja: 22%<br><small>Wyższa rotacja w branży outsourcingu - średnio 20-25%</small>'
+            },
+            production: { 
+                name: 'Produkcja / Przemysł', 
+                salary: 7000, 
+                rotation: 25,
+                info: '<strong>Produkcja / Przemysł:</strong> Średnie wynagrodzenie: 6,000-8,000 zł | Rotacja: 25%'
+            },
+            services: { 
+                name: 'Usługi', 
+                salary: 6500, 
+                rotation: 18,
+                info: '<strong>Usługi:</strong> Średnie wynagrodzenie: 5,500-7,500 zł | Rotacja: 18%'
+            },
+            admin: { 
+                name: 'Administracja', 
+                salary: 6000, 
+                rotation: 10,
+                info: '<strong>Administracja:</strong> Średnie wynagrodzenie: 5,000-7,000 zł | Rotacja: 10%'
+            },
+            custom: { 
+                name: 'Własne dane', 
+                salary: 8000, 
+                rotation: 15,
+                info: '<strong>Własne dane:</strong> Wprowadź swoje parametry'
+            }
+        };
+
+        // DOM Elements
+        const position = document.getElementById('position');
+        const industry = document.getElementById('industry');
+        const industryInfo = document.getElementById('industry-info');
+        const salary = document.getElementById('salary');
+        const employmentMonths = document.getElementById('employment-months');
+        const recruitmentWeeks = document.getElementById('recruitment-weeks');
+        const adCost = document.getElementById('ad-cost');
+        const recruiterHours = document.getElementById('recruiter-hours');
+        const recruiterRate = document.getElementById('recruiter-rate');
+        const managerHours = document.getElementById('manager-hours');
+        const managerRate = document.getElementById('manager-rate');
+        const trainingCost = document.getElementById('training-cost');
+        const productivityLoss = document.getElementById('productivity-loss');
+        const teamSize = document.getElementById('team-size');
+        const teamImpact = document.getElementById('team-impact');
+
+        const contractTabs = document.querySelectorAll('.tab');
+        let currentContract = 'employment';
+
+        // Cost display elements
+        const totalLabelEl = document.getElementById('total-label');
+        const recruitmentCostEl = document.getElementById('recruitment-cost');
+        const salaryCostEl = document.getElementById('salary-cost');
+        const onboardingCostEl = document.getElementById('onboarding-cost');
+        const productivityCostEl = document.getElementById('productivity-cost');
+        const repeatCostEl = document.getElementById('repeat-cost');
+        const teamCostEl = document.getElementById('team-cost');
+        const totalCostEl = document.getElementById('total-cost');
+        const salaryMultipleEl = document.getElementById('salary-multiple');
+        const costPerMonthEl = document.getElementById('cost-per-month');
+
+        // Contract type switching
+        contractTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                contractTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentContract = tab.dataset.contract;
+                calculateCosts();
+            });
+        });
+
+        // Industry change
+        industry.addEventListener('change', () => {
+            const data = industryData[industry.value];
+            industryInfo.innerHTML = data.info;
+            salary.value = data.salary;
+            calculateCosts();
+        });
+
+        // Calculate on input change
+        [position, salary, employmentMonths, recruitmentWeeks, adCost, recruiterHours, recruiterRate, 
+         managerHours, managerRate, trainingCost, productivityLoss, teamSize, teamImpact].forEach(input => {
+            input.addEventListener('input', calculateCosts);
+        });
+
+        function calculateCosts() {
+            const salaryValue = parseFloat(salary.value) || 0;
+            const months = parseInt(employmentMonths.value) || 0;
+            const weeks = parseInt(recruitmentWeeks.value) || 0;
+            
+            // Update total label with position name
+            const positionName = position.value.trim();
+            if (positionName) {
+                totalLabelEl.textContent = `Koszt Błędnej Rekrutacji: ${positionName}`;
+            } else {
+                totalLabelEl.textContent = 'Całkowity Koszt Błędnej Rekrutacji';
+            }
+            
+            // 1. Koszt procesu rekrutacyjnego
+            const recruitmentProcessCost = 
+                parseFloat(adCost.value || 0) +
+                (parseFloat(recruiterHours.value || 0) * parseFloat(recruiterRate.value || 0)) +
+                (parseFloat(managerHours.value || 0) * parseFloat(managerRate.value || 0));
+
+            // 2. Wypłacone wynagrodzenie + ZUS pracodawcy (20.48% - dane 2026)
+            const zusEmployer = 0.2048; // 9.76% + 6.5% + 1.67% + 2.45% + 0.1%
+            const totalSalaryCost = salaryValue * months * (1 + zusEmployer);
+
+            // 3. Koszty onboardingu
+            const onboardingHours = 30; // Średni czas wdrożenia przez rekrutera/HR
+            const mentorHours = 40; // Średni czas mentora/managera
+            const onboardingTotal = 
+                (onboardingHours * parseFloat(recruiterRate.value || 0)) +
+                (mentorHours * parseFloat(managerRate.value || 0)) +
+                parseFloat(trainingCost.value || 0);
+
+            // 4. Utracona produktywność
+            const productivityPercent = parseFloat(productivityLoss.value || 0) / 100;
+            const productivityCostTotal = salaryValue * months * productivityPercent;
+
+            // 5. Koszt ponownej rekrutacji (120% pierwszej - pilność)
+            const repeatRecruitmentCost = recruitmentProcessCost * 1.2;
+
+            // 6. Wpływ na zespół
+            const teamImpactPercent = parseFloat(teamImpact.value || 0) / 100;
+            const avgTeamSalary = salaryValue * 0.6; // Założenie: średnia pensja zespołu to 60% pensji tej osoby
+            const teamProductivityLoss = avgTeamSalary * parseInt(teamSize.value || 0) * months * teamImpactPercent;
+            const rotationRisk = salaryValue * 2; // Ryzyko rotacji jednej osoby z zespołu
+            const teamCostTotal = teamProductivityLoss + rotationRisk;
+
+            // Total
+            const total = recruitmentProcessCost + totalSalaryCost + onboardingTotal + 
+                         productivityCostTotal + repeatRecruitmentCost + teamCostTotal;
+
+            // Update display
+            recruitmentCostEl.textContent = formatCurrency(recruitmentProcessCost);
+            salaryCostEl.textContent = formatCurrency(totalSalaryCost);
+            onboardingCostEl.textContent = formatCurrency(onboardingTotal);
+            productivityCostEl.textContent = formatCurrency(productivityCostTotal);
+            repeatCostEl.textContent = formatCurrency(repeatRecruitmentCost);
+            teamCostEl.textContent = formatCurrency(teamCostTotal);
+            totalCostEl.textContent = formatCurrency(total);
+
+            // Comparisons
+            const yearSalary = salaryValue * 12 * (1 + zusEmployer);
+            const multiple = (total / yearSalary).toFixed(1);
+            salaryMultipleEl.textContent = multiple + '×';
+            
+            const perMonth = total / months;
+            costPerMonthEl.textContent = formatCurrency(perMonth);
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pl-PL', {
+                style: 'decimal',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value) + ' zł';
+        }
+
+        // Lead form
+        document.getElementById('lead-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                company: document.getElementById('company').value,
+                position: position.value,
+                totalCost: totalCostEl.textContent,
+                industry: industry.options[industry.selectedIndex].text,
+                salary: salary.value,
+                months: employmentMonths.value,
+                calculationDate: new Date().toISOString()
+            };
+
+            console.log('Lead captured:', formData);
+
+            // Show success message
+            document.getElementById('success-message').classList.add('show');
+            document.getElementById('lead-form').reset();
+
+            setTimeout(() => {
+                document.getElementById('success-message').classList.remove('show');
+            }, 5000);
+
+            // In production, send to backend:
+            /*
+            fetch('https://your-backend.com/api/leads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            */
+        });
+
+        // Initial calculation
+        calculateCosts();
+    </script>
+</body>
+</html>
